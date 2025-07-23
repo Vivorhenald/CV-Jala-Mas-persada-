@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV Jala Mas Persada</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- My Style -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Navbar start -->
+    <nav class="navbar">
+      <a href="#" class="navbar-logo" style="display: flex; align-items: center;">
+        <img src="NEW JMP FAV 1X.PNG" alt="Logo CV Jala Mas Persada" style="height: 40px; margin-right: 10px;" />
+        CV Jala Mas<span>Persada</span>.
+      </a>
+
+      <div class="navbar-nav">
+        <a href="#home">Home</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#products">Produk</a>
+        <a href="#contact">Kontak</a>
+      </div>
+
+      <div class="navbar-extra">
+        
+        <a href="#" id="search-button"><i data-feather="search"></i></a>
+        <a href="#" id="shopping-cart-button"
+          ><i data-feather="shopping-cart"></i
+        ></a>
+        <a href="#" id="Product"><i data-feather="menu"></i></a>
+      </div>
+
+      <!-- Search Form start -->
+      <div class="search-form">
+        <input type="search" id="search-box" placeholder="search here..." oninput="filterProducts()" />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <script>
+        function filterProducts() {
+          const query = document.getElementById('search-box').value.toLowerCase();
+          const productCards = document.querySelectorAll('.products .product-card');
+          productCards.forEach(card => {
+        const title = card.querySelector('h3');
+        if (title && title.textContent.toLowerCase().includes(query)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+          });
+        }
+      </script>
+      </div>
+      <!-- Search Form end -->
+
+      <!-- Shopping Cart start -->
+      <div class="shopping-cart" id="shopping-cart">
+        <!-- Cart items will be dynamically inserted here -->
+        <div id="cart-items"></div>
+        <div class="cart-total" style="margin-top:10px;">
+          <strong>Total: </strong><span id="cart-total">IDR 0</span>
+        </div>
+        <button id="checkout-btn" class="btn" style="margin-top:10px;width:100%;">Checkout</button>
+      </div>
+      <script>
+        // Simple cart logic using localStorage
+        const cartKey = 'cartItems';
+        function getCart() {
+          return JSON.parse(localStorage.getItem(cartKey)) || [];
+        }
+        function setCart(cart) {
+          localStorage.setItem(cartKey, JSON.stringify(cart));
+        }
+        function renderCart() {
+          const cart = getCart();
+          const cartItemsDiv = document.getElementById('cart-items');
+          cartItemsDiv.innerHTML = '';
+          let total = 0;
+          cart.forEach((item, idx) => {
+            total += item.price;
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `
+              <img src="${item.img}" alt="${item.name}" />
+              <div class="item-detail">
+                <h3>${item.name}</h3>
+                <div class="item-price">IDR ${item.price.toLocaleString()}</div>
+              </div>
+              <i data-feather="trash-2" class="remove-item" data-idx="${idx}" style="cursor:pointer;"></i>
+            `;
+            cartItemsDiv.appendChild(div);
+          });
+          document.getElementById('cart-total').textContent = 'IDR ' + total.toLocaleString();
+          feather.replace();
+        }
+        // Add to cart function (call this when user clicks add to cart)
+        function addToCart(item) {
+          const cart = getCart();
+          cart.push(item);
+          setCart(cart);
+          renderCart();
+        }
+        // Remove item
+        document.addEventListener('click', function(e) {
+          if (e.target.classList.contains('remove-item')) {
+            const idx = e.target.getAttribute('data-idx');
+            const cart = getCart();
+            cart.splice(idx, 1);
+            setCart(cart);
+            renderCart();
+          }
+        });
+        // Checkout button
+        document.getElementById('checkout-btn').onclick = function() {
+          const cart = getCart();
+          if (cart.length === 0) {
+            alert('Cart is empty!');
+            return;
+          }
+          alert('Checkout successful!\nTotal: IDR ' + cart.reduce((a, b) => a + b.price, 0).toLocaleString());
+          setCart([]);
+          renderCart();
+        };
+        // Example: Add event listeners to product "add to cart" buttons
+        document.addEventListener('DOMContentLoaded', function() {
+          renderCart();
+          document.querySelectorAll('.products .product-card').forEach(card => {
+            card.querySelector('a[href="#"] i[data-feather="shopping-cart"]').parentElement.onclick = function(e) {
+              e.preventDefault();
+              const img = card.querySelector('img').getAttribute('src');
+              const name = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Product';
+              // Example price, you can set your own logic to get price
+              const price = 30000;
+              addToCart({ img, name, price });
+            };
+          });
+        });
+      </script>
+      <!-- Shopping Cart end -->
+      <!-- Shopping Cart end -->
+    </nav>
+    <!-- Navbar end -->
+
+    <!-- Hero Section start -->
+    <section class="hero" id="home">
+      <div class="hero-image-container">
+      <img src="Homepage.jpg" alt="Homepage" class="hero-image" />
+      </div>
+      <div class="mask-container">
+        <main class="content">
+          <h1>
+
+             <span></span></h1>
+          <p></p>
+        </main>
+      </div>
+    </section>
+    <!-- Hero Section end -->
+
+    <!-- About Section start -->
+    <section id="about" class="about">
+      <h2><span>Tentang</span> Kami</h2>
+
+      <div class="row">
+        <div class="about-img">
+          <img src="img/tentang-kami.jpg" alt="Tentang Kami" />
+        </div>
+        <div class="content">
+          <h3>Kami berdiri tahun</h3>
+          <p>
+            <b>Kami adalah Toko Elektronik (Electronic Centre) yang khusus menyediakan kebutuhan pendingin ruangan (Air Conditioner) untuk perkantoran, rumah tinggal, dan lain-lain. Toko kami telah berdiri sejak tahun 1992, sehingga telah berpengalaman lebih dari 30 tahun di bidang tata udara.</b>
+          </p>
+          <p>
+            <b>Toko kami berlokasi di Pertokoan Cendrawasih, Jln. Cendrawasih
+            kav.15, Semarang Jawa Tengah</b>
+            <iframe referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- About Section end -->
+
+    <!-- Menu Section start -->
+
+    <!-- Menu Section end -->
+
+    <!-- Products Section start -->
+    <section class="products" id="products">
+      <h2><span>Produk Unggulan</span> Kami</h2>
+      <p>
+     
+      </p>
+
+      <div class="row">
+        <div class="product-card">
+          <div class="product-icons">
+            <a href="#"><i data-feather="shopping-cart"></i></a>
+            <a href="#" class="item-detail-button"
+              ><i data-feather="eye"></i
+            ></a>
+          </div>
+          <div class="product-image">
+        
+        <img src="Midea Msafe 05 crn2x.png" alt="Midea Msafe 0,5 pk MSF-05CR" />
+
+        </div>
+        <div class="product-content">
+          <h3>Midea Msafe 0,5 pk MSF-05CR</h3>
+        <i data-feather="star" class="star-full"></i>
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star"></i>
+          
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-icons">
+            <a href="#"><i data-feather="shopping-cart"></i></a>
+            <a href="#" class="item-detail-button"
+              ><i data-feather="eye"></i
+            ></a>
+          </div>
+          <div class="product-image">
+
+              <div
+                <div class="product-image" style="display: flex; justify-content: center; align-items: center; height: 500px;">
+                <img src="Gree 0,5 pk GWC05N1A.png" alt="Gree 0,5 pk GWC05N1A" style="max-width: 100%; max-height: 200px; display: block;" />
+                </div>
+              <div style="text-align: center; margin-top: 10px;">
+                <h3 style="margin: 0;">Gree 0,5 pk GWC05N1A</h3>
+              </div>
+            <div class="product-stars">
+              <i data-feather="star"></i>
+              <i data-feather="star"></i>
+              <i data-feather="star"></i>
+              <i data-feather="star"></i>
+              <i data-feather="star"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Products Section end -->
+
+    <!-- Contact Section start -->
+    <section id="contact" class="contact">
+      <h2><span>Kontak</span> Kami</h2>
+      <p>
+        <b>Berikut adalah kontak kami yang dapat dihubungi :</b>
+        <a
+          href="https://api.whatsapp.com/send?phone=6281215000537"
+          target="_blank"
+          style="color: blue; font-weight: bold;"
+          >WhatsApp</a>
+        >,
+      </p>
+
+      <div class="row">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.349674171413!2d110.42772447317975!3d-6.968011068223187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70f356ef4e0f41:0xc67a4ac368bd1ca2!2sNIAGA%20AC%20-%20CV.%20JALA%20MAS%20PERSADA!5e0!3m2!1sid!2sid!4v1753083764577!5m2!1sid!2sid"
+          width="100%"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="map"
+        ></iframe>
+
+        <form action="">
+          <div class="input-group">
+            <i data-feather="user"></i>
+            <input type="text" placeholder="nama" />
+          </div>
+          <div class="input-group">
+            <i data-feather="mail"></i>
+            <input type="text" placeholder="email" />
+          </div>
+          <div class="input-group">
+            <i data-feather="phone"></i>
+            <input type="text" placeholder="no hp" />
+          </div>
+          <button type="submit" class="btn">kirim pesan</button>
+        </form>
+      </div>
+    </section>
+    <!-- Contact Section end -->
+
+    <!-- Footer start -->
+    <footer>
+      <div class="socials">
+        <a href="https://www.instagram.com/niagaaircond/" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+        
+      </div>
+
+      <div class="links">
+        <a href="#home">Home</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#menu">Menu</a>
+        <a href="#contact">Kontak</a>
+      </div>
+
+      <div class="credit">
+        <p>Created by <a href="">Rhenaldinata L</a>. | &copy; 2025.</p>
+      </div>
+    </footer>
+    <!-- Footer end -->
+
+    <!-- Modal Box Item Detail start -->
+    <div class="modal" id="item-detail-modal">
+      <div class="modal-container">
+        <a href="#" class="close-icon"><i data-feather="x"></i></a>
+        <div class="modal-content">
+          <img src="img/products/1.jpg" alt="Product 1" />
+          <div class="product-content">
+            <h3>Product 1</h3>
+            <p>
+             
+            </p>
+            <div class="product-stars">
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star"></i>
+            </div>
+            <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>add to cart</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Box Item Detail end -->
+
+    <!-- Feather Icons -->
+    <script>
+      feather.replace();
+    </script>
+
+    <!-- My Javascript -->
+    <script src="js/java.js"></script>
+  </body>
+</html>
